@@ -1,6 +1,7 @@
 package org.biosharing.dao;
 
 import org.biosharing.model.Standard;
+import org.biosharing.model.StandardFields;
 import org.biosharing.utils.Annotator;
 import org.biosharing.utils.OntologyLocator;
 import org.biosharing.utils.PublicationLocator;
@@ -43,9 +44,14 @@ public class DAOTest {
         OntologyLocator ontologyLocator = new OntologyLocator();
         List<Standard> ontologies = ontologyLocator.getAllOntologies();
 
+        int count= 0;
         for (Standard ontology : ontologies) {
-            if (!standards.containsKey(ontology.getStandard())) {
+            if (!standards.containsKey(ontology.getStandardTitle())) {
+                ontology.getFieldToValue().put(StandardFields.SERIAL_ID, count);
+                ontology.getFieldToValue().put(StandardFields.NID, count);
+                ontology.getFieldToValue().put(StandardFields.VID, count);
                 dao.insertStandard(ontology);
+                count++;
             }
         }
 
@@ -86,14 +92,14 @@ public class DAOTest {
 
         for (Standard standard : standards.values()) {
             if (standard.getPublication().isEmpty()) {
-                System.out.println("Locating publications for " + standard.getStandard());
+                System.out.println("Locating publications for " + standard.getStandardTitle());
 
-                List<CiteExploreResult> publications = publicationLocator.searchForPublication(standard.getStandard(), standard.getFullName());
+                List<CiteExploreResult> publications = publicationLocator.searchForPublication(standard.getStandardTitle(), standard.getFullName());
 
                 if (publications.size() > 0) {
-                    System.out.println("We have " + publications.size() + " publications for " + standard.getStandard());
+                    System.out.println("We have " + publications.size() + " publications for " + standard.getStandardTitle());
 
-                    dao.updateStandard(standard, publications.get(0));
+                    dao.updateStandardWithPublication(standard, publications.get(0));
                 }
             }
         }

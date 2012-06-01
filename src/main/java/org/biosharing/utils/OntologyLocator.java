@@ -1,6 +1,7 @@
 package org.biosharing.utils;
 
 import org.biosharing.model.Standard;
+import org.biosharing.model.StandardFields;
 import org.isatools.isacreator.configuration.Ontology;
 import org.isatools.isacreator.ontologymanager.BioPortalClient;
 
@@ -25,13 +26,15 @@ public class OntologyLocator {
         List<Standard> standards = new ArrayList<Standard>();
         for(Ontology ontology : ontologies) {
             Standard standard = new Standard();
-            standard.getFieldToValue().put(Standard.STANDARD, ontology.getOntologyAbbreviation());
-            standard.getFieldToValue().put(Standard.FULL_NAME, ontology.getOntologyDisplayLabel());
-            standard.getFieldToValue().put(Standard.TYPE, "terminology artifact");
-            standard.getFieldToValue().put(Standard.DOMAIN, "");
-            standard.getFieldToValue().put(Standard.ORGANIZATION, "");
+            standard.getFieldToValue().put(StandardFields.STANDARD_TITLE, ontology.getOntologyAbbreviation());
+            standard.getFieldToValue().put(StandardFields.FULL_NAME, ontology.getOntologyDisplayLabel());
+            standard.getFieldToValue().put(StandardFields.TYPE, "terminology artifact");
+            standard.getFieldToValue().put(StandardFields.DOMAIN, "");
+            standard.getFieldToValue().put(StandardFields.ORGANIZATION_URL, ontology.getHomepage());
+            standard.getFieldToValue().put(StandardFields.CONTACT, ontology.getContactName());
             // Here we should check for available publications...
-            standard.getFieldToValue().put(Standard.PUBLICATION, "");
+            standard.getFieldToValue().put(StandardFields.PUBLICATION_TITLE, "");
+            standard.getFieldToValue().put(StandardFields.PUBLICATION_URL, "");
             standards.add(standard);
         }
 

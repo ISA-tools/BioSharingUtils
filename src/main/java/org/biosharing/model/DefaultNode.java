@@ -1,6 +1,7 @@
 package org.biosharing.model;
 
 
+import org.apache.commons.collections15.OrderedMap;
 import org.apache.commons.collections15.map.ListOrderedMap;
 
 import java.util.Map;
@@ -15,17 +16,17 @@ import java.util.Map;
  */
 public class DefaultNode implements Node{
 
-    private Map<String, String> fieldToValue;
+    private OrderedMap<StandardFields, Object> fieldToValue;
 
     public DefaultNode() {
-        fieldToValue = new ListOrderedMap<String, String>();
+        fieldToValue = new ListOrderedMap<StandardFields, Object>();
     }
 
-    public void addFieldAndValue(String field, String value) {
+    public void addFieldAndValue(StandardFields field, String value) {
         fieldToValue.put(field, value);
     }
 
-    public String getValueForField(String field) {
+    public Object getValueForField(StandardFields field) {
         if (fieldToValue.containsKey(field)) {
             return fieldToValue.get(field);
         } else {
@@ -33,7 +34,7 @@ public class DefaultNode implements Node{
         }
     }
 
-    public Map<String, String> getFieldToValue() {
+    public OrderedMap<StandardFields, Object> getFieldToValue() {
         return fieldToValue;
     }
 }

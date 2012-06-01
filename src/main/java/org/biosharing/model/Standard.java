@@ -10,39 +10,63 @@ package org.biosharing.model;
  */
 public class Standard extends DefaultNode {
 
-    public static final String STANDARD = "standard name";
-    public static final String FULL_NAME = "full name";
-    public static final String TYPE = "type";
-    public static final String DOMAIN = "domains";
-    public static final String ORGANIZATION = "organizations";
-    public static final String PUBLICATION = "publications";
+    // publications may need to be a list. Also need to add contacts. Might be able to get this from
+    // the ontology object directly. Look at dbInfo.txt for the schema.
+
+    public String getVId() {
+        return getValueForField(StandardFields.VID).toString();
+    }
+
+    public String getNodeId() {
+        return getValueForField(StandardFields.NID).toString();
+    }
     
-    public String getStandard() {
-        return getValueForField(STANDARD);
+    public String getSerialID() {
+        return getValueForField(StandardFields.SERIAL_ID).toString();
+    }
+
+    public String getComputedID() {
+        return getValueForField(StandardFields.COMPUTED_ID).toString();
+    }
+
+    public String getStandardURL() {
+        return getValueForField(StandardFields.FULL_NAME).toString();
+    }
+
+    public String getStandardTitle() {
+        return getValueForField(StandardFields.FULL_NAME).toString();
     }
 
     public String getFullName() {
-        return getValueForField(FULL_NAME);
+        return getValueForField(StandardFields.FULL_NAME).toString();
     }
 
     public String getType() {
-        return getValueForField(TYPE);
+        return getValueForField(StandardFields.TYPE).toString();
     }
 
     public String getDomain() {
-        return getValueForField(DOMAIN);
+        return getValueForField(StandardFields.DOMAIN).toString();
     }
 
     public String getOrganization() {
-        return getValueForField(ORGANIZATION);
+        return getValueForField(StandardFields.ORGANIZATION_TITLE).toString();
+    }
+
+    public String getOrganizationURL() {
+        return getValueForField(StandardFields.ORGANIZATION_URL).toString();
     }
 
     public String getPublication() {
-        return getValueForField(PUBLICATION);
+        return getValueForField(StandardFields.PUBLICATION_TITLE).toString();
+    }
+
+    public String getPublicationURL() {
+        return getValueForField(StandardFields.PUBLICATION_URL).toString();
     }
 
     public String toString() {
-        return getStandard() + "(" + getFullName() + ")";
+        return getFullName();
     }
 
 }

@@ -1,6 +1,7 @@
 package org.biosharing.dao;
 
 import org.biosharing.model.Standard;
+import org.biosharing.model.StandardFields;
 import org.isatools.isacreator.publicationlocator.CiteExploreResult;
 
 import java.sql.ResultSet;
@@ -20,19 +21,18 @@ public class BioSharingDAO extends DAO {
 
 
     public Map<String, Standard> getStandardNodeInformation() {
-        ResultSet results = executeQuery("select * from standards");
+        ResultSet results = executeQuery("select * from standard");
         Map<String, Standard> standards = new HashMap<String, Standard>();
 
         try {
             while (results.next()) {
                 Standard standard = new Standard();
-                standard.addFieldAndValue(Standard.STANDARD, results.getString(Standard.STANDARD));
-                standard.addFieldAndValue(Standard.FULL_NAME, results.getString(Standard.FULL_NAME));
-                standard.addFieldAndValue(Standard.TYPE, results.getString(Standard.TYPE));
-                standard.addFieldAndValue(Standard.DOMAIN, results.getString(Standard.DOMAIN));
-                standard.addFieldAndValue(Standard.ORGANIZATION, results.getString(Standard.ORGANIZATION));
-                standard.addFieldAndValue(Standard.PUBLICATION, results.getString(Standard.PUBLICATION));
-                standards.put(standard.getStandard(), standard);
+                // this can be made more compact using the enumeration to populate the object.
+
+                for (StandardFields field : StandardFields.values()) {
+                    standard.addFieldAndValue(field, results.getString(field.toString()));
+                }
+                standards.put(standard.getStandardTitle(), standard);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,10 +44,10 @@ public class BioSharingDAO extends DAO {
     }
 
 
-    public void updateStandard(Standard standard, CiteExploreResult publication) {
+    public void updateStandardWithPublication(Standard standard, CiteExploreResult publication) {
         try {
 
-            int rowsAffected = executeUpdate("UPDATE standards SET publications='" + publication.getId() + "' WHERE `standard name`='" + standard.getStandard() + "';");
+            int rowsAffected = executeUpdate("UPDATE standard SET " + StandardFields.PUBLICATION_TITLE + "='" + publication.getId() + "' WHERE `" + StandardFields.STANDARD_TITLE + "`='" + standard.getStandardTitle() + "';");
 
             if (rowsAffected == 0) {
                 System.err.println("** NO UPDATE PERFORMED! **");
@@ -63,8 +63,28 @@ public class BioSharingDAO extends DAO {
 
     public boolean insertStandard(Standard standard) {
 
-        String queryURL = "INSERT standards VALUES ('" + standard.getStandard() + "',  '" + standard.getFullName() + "',  '" + standard.getType() + "',  '" + standard.getDomain()
-                + "',  '" + standard.getPublication() + "',  '" + standard.getOrganization() + "');";
+        StringBuilder columnNames = new StringBuilder();
+        StringBuilder values = new StringBuilder();
+        int count = 0;
+        for (StandardFields standardField : standard.getFieldToValue().keySet()) {
+            columnNames.append("`").append(standardField.toString()).append("`");
+            Object value =standard.getFieldToValue().get(standardField);
+            if(value instanceof String) {
+                values.append("'").append(value.toString()).append("'");
+            } else {
+                
+                values.append(value == null ? "''" : value.toString());
+            }
+
+            if (count < standard.getFieldToValue().size() - 1) {
+                columnNames.append(",");
+                values.append(",");
+            }
+            count++;
+        }
+
+        // this can be made more compact using the enumeration to get back the fields in the order they were served out.
+        String queryURL = "INSERT standard (" + columnNames + ") VALUES (" + values + ");";
 
         System.out.println(queryURL);
         return executeInsert(queryURL);
