@@ -1,0 +1,1 @@
+java -jar -Xms256m -Xmx1024m -XX:PermSize=64m -XX:MaxPermSize=128m BioSharingUtils-1.0-jar-with-dependencies.jar

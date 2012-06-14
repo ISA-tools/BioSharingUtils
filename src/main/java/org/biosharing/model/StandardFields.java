@@ -23,6 +23,7 @@ public enum StandardFields {
     DOMAIN("field_domain_value"),
     PUBLICATION_URL("field_publication_url"),
     PUBLICATION_TITLE("field_publication_title"),
+    PUBLICATION_ATTRIBUTES("field_publication_attributes"),
     ORGANIZATION_URL("field_organization_url"),
     ORGANIZATION_TITLE("field_organization_title"),
     CONTACT("field_contact_value");

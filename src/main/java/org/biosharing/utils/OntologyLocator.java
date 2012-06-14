@@ -20,22 +20,31 @@ public class OntologyLocator {
 
     public List<Standard> getAllOntologies() {
         BioPortalClient client = new BioPortalClient();
-        
+
+        System.out.println("Locating ontologies in BioPortal.");
+
         List<Ontology> ontologies = client.getAllOntologies(true);
-        
+
         List<Standard> standards = new ArrayList<Standard>();
-        for(Ontology ontology : ontologies) {
-            Standard standard = new Standard();
-            standard.getFieldToValue().put(StandardFields.STANDARD_TITLE, ontology.getOntologyAbbreviation());
-            standard.getFieldToValue().put(StandardFields.FULL_NAME, ontology.getOntologyDisplayLabel());
-            standard.getFieldToValue().put(StandardFields.TYPE, "terminology artifact");
-            standard.getFieldToValue().put(StandardFields.DOMAIN, "");
-            standard.getFieldToValue().put(StandardFields.ORGANIZATION_URL, ontology.getHomepage());
-            standard.getFieldToValue().put(StandardFields.CONTACT, ontology.getContactName());
-            // Here we should check for available publications...
-            standard.getFieldToValue().put(StandardFields.PUBLICATION_TITLE, "");
-            standard.getFieldToValue().put(StandardFields.PUBLICATION_URL, "");
-            standards.add(standard);
+        if (ontologies != null) {
+            System.out.println("Found " + ontologies.size() + " in BioPortal.");
+
+
+            for (Ontology ontology : ontologies) {
+                Standard standard = new Standard();
+
+                standard.initialiseStandard();
+
+                standard.getFieldToValue().put(StandardFields.STANDARD_TITLE, ontology.getOntologyAbbreviation());
+                standard.getFieldToValue().put(StandardFields.FULL_NAME, ontology.getOntologyDisplayLabel());
+                standard.getFieldToValue().put(StandardFields.TYPE, "terminology artifact");
+                standard.getFieldToValue().put(StandardFields.ORGANIZATION_URL, ontology.getHomepage());
+                standard.getFieldToValue().put(StandardFields.CONTACT, ontology.getContactName());
+                // Here we should check for available publications...
+                standards.add(standard);
+            }
+        } else {
+            System.out.println("Problem encountered with BioPortal. Please try again later.");
         }
 
         return standards;

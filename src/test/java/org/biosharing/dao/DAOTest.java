@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static junit.framework.Assert.assertTrue;
+
 /**
  * Created by the ISA team
  *
@@ -25,7 +27,7 @@ import java.util.Set;
  */
 public class DAOTest {
 
-    @Ignore
+    @Test
     public void testQuery() {
         BioSharingDAO dao = new BioSharingDAO();
         Map<String, Standard> defaultNodes = dao.getStandardNodeInformation();
@@ -33,78 +35,7 @@ public class DAOTest {
         for (String standard : defaultNodes.keySet()) {
             System.out.println(defaultNodes.get(standard));
         }
+
+        assertTrue("Oh, we have no standards. I was expecting some.", defaultNodes.size() > 0);
     }
-
-    @Ignore
-    public void loadAllOntologiesIntoDB() {
-        BioSharingDAO dao = new BioSharingDAO();
-        // this will let us know what hasn't already been added
-        Map<String, Standard> standards = dao.getStandardNodeInformation();
-
-        OntologyLocator ontologyLocator = new OntologyLocator();
-        List<Standard> ontologies = ontologyLocator.getAllOntologies();
-
-        int count= 0;
-        for (Standard ontology : ontologies) {
-            if (!standards.containsKey(ontology.getStandardTitle())) {
-                ontology.getFieldToValue().put(StandardFields.SERIAL_ID, count);
-                ontology.getFieldToValue().put(StandardFields.NID, count);
-                ontology.getFieldToValue().put(StandardFields.VID, count);
-                dao.insertStandard(ontology);
-                count++;
-            }
-        }
-
-        dao.closeConnection();
-    }
-
-    @Ignore
-    public void getDomainsAndAnnotate() {
-        BioSharingDAO dao = new BioSharingDAO();
-        // this will let us know what hasn't already been added
-        Map<String, Standard> standards = dao.getStandardNodeInformation();
-
-        Set<String> domains = new HashSet<String>();
-
-        for (Standard standard : standards.values()) {
-            System.out.println("Processing " + standard + ", domain is " + standard.getDomain());
-            domains.add(standard.getDomain());
-        }
-
-        Annotator annotator = new Annotator();
-        Map<String, Map<String, AnnotatorResult>> matches = annotator.searchForMatches(domains);
-
-        for (String domain : matches.keySet()) {
-            System.out.println(domain);
-            for (String match : matches.get(domain).keySet()) {
-                System.out.println("\t" + match);
-            }
-        }
-    }
-
-    @Test
-    public void getStandardsAndFindPublications() {
-        BioSharingDAO dao = new BioSharingDAO();
-        // this will let us know what hasn't already been added
-        Map<String, Standard> standards = dao.getStandardNodeInformation();
-
-        PublicationLocator publicationLocator = new PublicationLocator();
-
-        for (Standard standard : standards.values()) {
-            if (standard.getPublication().isEmpty()) {
-                System.out.println("Locating publications for " + standard.getStandardTitle());
-
-                List<CiteExploreResult> publications = publicationLocator.searchForPublication(standard.getStandardTitle(), standard.getFullName());
-
-                if (publications.size() > 0) {
-                    System.out.println("We have " + publications.size() + " publications for " + standard.getStandardTitle());
-
-                    dao.updateStandardWithPublication(standard, publications.get(0));
-                }
-            }
-        }
-
-
-    }
-
 }

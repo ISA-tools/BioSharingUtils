@@ -10,6 +10,8 @@ package org.biosharing.model;
  */
 public class Standard extends DefaultNode {
 
+
+
     // publications may need to be a list. Also need to add contacts. Might be able to get this from
     // the ontology object directly. Look at dbInfo.txt for the schema.
 
@@ -30,11 +32,11 @@ public class Standard extends DefaultNode {
     }
 
     public String getStandardURL() {
-        return getValueForField(StandardFields.FULL_NAME).toString();
+        return getValueForField(StandardFields.STANDARD_URL).toString();
     }
 
     public String getStandardTitle() {
-        return getValueForField(StandardFields.FULL_NAME).toString();
+        return getValueForField(StandardFields.STANDARD_TITLE).toString();
     }
 
     public String getFullName() {
@@ -67,6 +69,12 @@ public class Standard extends DefaultNode {
 
     public String toString() {
         return getFullName();
+    }
+
+    public void initialiseStandard() {
+        for(StandardFields standardField : StandardFields.values()) {
+            addFieldAndValue(standardField, "");
+        }
     }
 
 }

@@ -53,7 +53,7 @@ public abstract class DAO {
         return null;
     }
 
-    protected void closeConnection() {
+    public void closeConnection() {
         if (connection != null) {
             try {
                 connection.close();

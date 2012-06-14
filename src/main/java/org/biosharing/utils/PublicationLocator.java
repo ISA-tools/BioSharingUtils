@@ -51,12 +51,11 @@ public class PublicationLocator {
                 queryURL += SearchOption.TITLE.getQueryString(query) + " OR "
                         + SearchOption.FULL_TEXT.getQueryString(query);
             }
-            System.out.println(queryURL);
             return publicationSearcher.performQuery(SearchOption.COMPOSITE, queryURL);
         } catch (QueryException_Exception qex) {
             System.out.printf("Caught QueryException_Exception: %s\n", qex.getFaultInfo().getMessage());
         } catch (NoPublicationFoundException e) {
-            System.out.println("No publication found");
+            System.out.println("No publications found");
         }
 
         return new ArrayList<CiteExploreResult>();

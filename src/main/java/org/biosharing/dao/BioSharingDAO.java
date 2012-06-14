@@ -46,8 +46,10 @@ public class BioSharingDAO extends DAO {
 
     public void updateStandardWithPublication(Standard standard, CiteExploreResult publication) {
         try {
-
-            int rowsAffected = executeUpdate("UPDATE standard SET " + StandardFields.PUBLICATION_TITLE + "='" + publication.getId() + "' WHERE `" + StandardFields.STANDARD_TITLE + "`='" + standard.getStandardTitle() + "';");
+            String pubmedURL = "http://www.ncbi.nlm.nih.gov/pubmed?term=";
+            int rowsAffected = executeUpdate("UPDATE standard SET " + StandardFields.PUBLICATION_TITLE + "='" + publication.getTitle() + "', "
+                    + StandardFields.PUBLICATION_URL + "='" + pubmedURL + publication.getId() + "', " + StandardFields.PUBLICATION_ATTRIBUTES + "='" + publication.getId()
+                    + "' WHERE `" + StandardFields.STANDARD_TITLE + "`='" + standard.getStandardTitle() + "';");
 
             if (rowsAffected == 0) {
                 System.err.println("** NO UPDATE PERFORMED! **");
@@ -68,11 +70,11 @@ public class BioSharingDAO extends DAO {
         int count = 0;
         for (StandardFields standardField : standard.getFieldToValue().keySet()) {
             columnNames.append("`").append(standardField.toString()).append("`");
-            Object value =standard.getFieldToValue().get(standardField);
-            if(value instanceof String) {
+            Object value = standard.getFieldToValue().get(standardField);
+            if (value instanceof String) {
                 values.append("'").append(value.toString()).append("'");
             } else {
-                
+
                 values.append(value == null ? "''" : value.toString());
             }
 
