@@ -34,7 +34,8 @@ public class BioSharingDAO extends DAO {
                 // this can be made more compact using the enumeration to populate the object.
 
                 for (Fields field : NodeFields.values()) {
-                    node.addFieldAndValue(field, results.getString(field.toString()));
+                    String value = results.getString(field.toString());
+                    node.addFieldAndValue(field, value == null ? "" : value);
                 }
                 if (node.getNodeId() != null) {
                     nodes.add(node);

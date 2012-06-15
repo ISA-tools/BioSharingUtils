@@ -101,21 +101,16 @@
 
     </dependencies>
 
-
     <profiles>
-
         <profile>
-            <id>biosharing-db</id>
+            <id>biosharing-local</id>
             <properties>
                 <db.url>jdbc:mysql://localhost:33066/biosharing</db.url>
                 <db.class>com.mysql.jdbc.Driver</db.class>
                 <db.username>root</db.username>
                 <db.password></db.password>
             </properties>
-
         </profile>
     </profiles>
-
-
 
 </project>
