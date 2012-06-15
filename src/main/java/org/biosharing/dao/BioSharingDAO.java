@@ -61,7 +61,7 @@ public class BioSharingDAO extends DAO {
                 for (Fields field : AliasFields.values()) {
                     node.addFieldAndValue(field, results.getString(field.toString()));
                 }
-                if (node.getNodeId() != null) {
+                if (node.getPID() != null) {
                     aliases.add(node);
                 }
             }

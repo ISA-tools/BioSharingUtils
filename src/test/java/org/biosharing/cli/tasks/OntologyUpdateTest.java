@@ -4,6 +4,7 @@ import org.biosharing.model.Standard;
 import org.biosharing.utils.OntologyLocator;
 import org.isatools.isacreator.configuration.Ontology;
 import org.isatools.isacreator.ontologymanager.BioPortalClient;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -20,7 +21,7 @@ import static junit.framework.Assert.assertTrue;
  */
 public class OntologyUpdateTest {
 
-    @Test
+    @Ignore
     public void testGetOntologies() {
         BioPortalClient client = new BioPortalClient();
 
@@ -31,7 +32,7 @@ public class OntologyUpdateTest {
         System.out.println("We have " + ontologies.size() + " ontologies in BioPortal.");
     }
 
-    @Test
+    @Ignore
     public void testFilterOntologies() {
         // we want to filter out all ontologies which are 'test' ontologies. These explicitly have test in the id, so it
         // makes them easy to identify.

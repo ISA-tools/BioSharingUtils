@@ -1,5 +1,8 @@
 package org.biosharing.model;
 
+
+import java.sql.Date;
+
 /**
  * Created by the ISA team
  *
@@ -19,6 +22,8 @@ public class Node extends DefaultTable {
     }
     
     public void initialiseNodeForStandard(int id, Standard standard) {
+        Date date = new Date(System.currentTimeMillis());
+
         addFieldAndValue(NodeFields.NID, id);
         addFieldAndValue(NodeFields.VID, id);
         addFieldAndValue(NodeFields.TYPE, "standard_cck");
@@ -26,8 +31,8 @@ public class Node extends DefaultTable {
         addFieldAndValue(NodeFields.TITLE, standard.getStandardTitle());
         addFieldAndValue(NodeFields.UID, 1);
         addFieldAndValue(NodeFields.STATUS, 1);
-        addFieldAndValue(NodeFields.CREATED, System.currentTimeMillis());
-        addFieldAndValue(NodeFields.CHANGED, System.currentTimeMillis());
+        addFieldAndValue(NodeFields.CREATED, date);
+        addFieldAndValue(NodeFields.CHANGED, date);
         addFieldAndValue(NodeFields.COMMENT, 0);
         addFieldAndValue(NodeFields.PROMOTE, 1);
         addFieldAndValue(NodeFields.MODERATE, 0);

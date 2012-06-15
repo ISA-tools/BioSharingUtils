@@ -36,45 +36,53 @@ public class OntologyUpdateTask extends Task {
         int startingNodeId = getNextNodeId();
         System.out.println(startingNodeId);
 
+        System.out.println("Getting next pid.");
+        int aliasId = getNextAliasId();
+        System.out.println(aliasId);
+
         System.out.println("Getting next computed node id.");
         int startingComputedId = getLastComputedId(standards);
         System.out.println(startingComputedId);
+        
+        
 
-        int count = startingNodeId;
+        int nodeId = startingNodeId;
 
         System.out.println("Going to add " + ontologies.size() + " ontologies");
         System.out.println();
         for (Standard ontology : ontologies) {
             System.out.println("Going to add " + ontology.getStandardTitle());
             if (!standards.containsKey(ontology.getStandardTitle())) {
-                ontology.getFieldToValue().put(StandardFields.SERIAL_ID, count);
-                ontology.getFieldToValue().put(StandardFields.NID, count);
-                ontology.getFieldToValue().put(StandardFields.VID, count);
+
+                ontology.getFieldToValue().put(StandardFields.SERIAL_ID, nodeId);
+                ontology.getFieldToValue().put(StandardFields.NID, nodeId);
+                ontology.getFieldToValue().put(StandardFields.VID, nodeId);
                 ontology.addFieldAndValue(StandardFields.COMPUTED_ID, createComputedId(startingComputedId + 1, '0', 6));
-                System.out.println("inserting " + ontology.getStandardTitle() + " into db");
+
                 dao.insertInformation(ontology);
-                System.out.println("inserted");
 
                 Node nodeForStandard = new Node();
-                nodeForStandard.initialiseNodeForStandard(count, ontology);
+                nodeForStandard.initialiseNodeForStandard(nodeId, ontology);
                 dao.insertInformation(nodeForStandard);
 
                 System.out.println("Inserted Node");
 
                 Alias aliasForStandard = new Alias();
-                aliasForStandard.initialiseAliasForStandard(count, ontology);
+                aliasForStandard.initialiseAliasForStandard(aliasId, nodeId, ontology);
                 dao.insertInformation(aliasForStandard);
 
                 System.out.println("Inserted Alias");
 
-                count++;
+                startingComputedId++;
+                aliasId++;
+                nodeId++;
             }
         }
 
-        if (count == 0) {
+        if (nodeId == 0) {
             System.out.println("Database is up to date.");
         } else {
-            System.out.println((count - startingNodeId) +
+            System.out.println((nodeId - startingNodeId) +
                     " ontologies were not in the database before. They have now been added.");
         }
 
@@ -95,13 +103,22 @@ public class OntologyUpdateTask extends Task {
     }
 
     private String createComputedId(int id, char paddingCharacter, int desiredLength) {
+        System.out.println("Creating computed id for "+ id);
         String value = String.valueOf(id);
 
         int padding = desiredLength - value.length();
-        for (int paddingCount = 0; paddingCount < padding; padding++) {
+        for (int paddingCount = 0; paddingCount < padding; paddingCount++) {
             value = paddingCharacter + value;
         }
-        return "bsg-" + value;
+
+        String bsg = "bsg-" + value;
+        System.out.println(bsg);
+        return bsg;
+    }
+    
+    public int getNextAliasId() {
+        List<Alias> aliases = dao.getAliasInformation();
+        return getAliasIdStart(aliases);
     }
 
     public int getNextNodeId() {
@@ -109,6 +126,23 @@ public class OntologyUpdateTask extends Task {
         // this will let us know what hasn't already been added
         List<Node> nodes = dao.getNodeInformation();
         return getNodeIdStart(nodes);
+    }
+
+    public int getAliasIdStart(List<Alias> aliases) {
+        int maxValue = 0;
+
+        for (Alias alias : aliases) {
+            try {
+                int nodeId = Integer.valueOf(alias.getPID());
+                if (nodeId > maxValue) {
+                    maxValue = nodeId;
+                }
+            } catch (NumberFormatException nfe) {
+                // skip this node
+            }
+        }
+
+        return maxValue + 1;
     }
 
     public int getNodeIdStart(List<Node> nodes) {

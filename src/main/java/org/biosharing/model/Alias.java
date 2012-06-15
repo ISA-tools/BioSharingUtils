@@ -10,21 +10,21 @@ package org.biosharing.model;
  */
 public class Alias extends DefaultTable {
 
-    public String getNodeId() {
-        return getValueForField(NodeFields.NID).toString();
+    public String getPID() {
+        return getValueForField(AliasFields.PID).toString();
     }
 
     public String toString() {
-        return getNodeId();
+        return getPID();
     }
 
     public void initialiseAlias() {
         addFieldAndValue(AliasFields.LANGUAGE, "en");
     }
 
-    public void initialiseAliasForStandard(int nodeId, Standard standard) {
+    public void initialiseAliasForStandard(int pid, int nodeId, Standard standard) {
         initialiseAlias();
-        addFieldAndValue(AliasFields.PID, nodeId);
+        addFieldAndValue(AliasFields.PID, pid);
         addFieldAndValue(AliasFields.SRC, "node/" + nodeId);
         addFieldAndValue(AliasFields.DST, standard.getComputedID());
     }
