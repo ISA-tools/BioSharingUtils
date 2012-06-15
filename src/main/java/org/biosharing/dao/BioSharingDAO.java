@@ -33,7 +33,9 @@ public class BioSharingDAO extends DAO {
                 for (StandardFields field : StandardFields.values()) {
                     standard.addFieldAndValue(field, results.getString(field.toString()));
                 }
-                standards.put(standard.getStandardTitle(), standard);
+                if (standard.getStandardTitle() != null) {
+                    standards.put(standard.getStandardTitle(), standard);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

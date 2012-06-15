@@ -18,6 +18,7 @@ import java.util.List;
  */
 public class OntologyLocator {
 
+    public static final String BIOPORTAL_ONTOLOGY_URL = "http://bioportal.bioontology.org/ontologies/";
     public List<Standard> getAllOntologies() {
         BioPortalClient client = new BioPortalClient();
 
@@ -37,6 +38,9 @@ public class OntologyLocator {
 
                     standard.getFieldToValue().put(StandardFields.STANDARD_TITLE, ontology.getOntologyAbbreviation());
                     standard.getFieldToValue().put(StandardFields.FULL_NAME, ontology.getOntologyDisplayLabel());
+                    standard.getFieldToValue().put(StandardFields.STANDARD_URL, BIOPORTAL_ONTOLOGY_URL + ontology.getOntologyID());
+                    standard.getFieldToValue().put(StandardFields.MIBBI, "no");
+                    standard.getFieldToValue().put(StandardFields.OBO, "no");
                     standard.getFieldToValue().put(StandardFields.TYPE, "terminology artifact");
                     standard.getFieldToValue().put(StandardFields.ORGANIZATION_URL, ontology.getHomepage());
                     standard.getFieldToValue().put(StandardFields.CONTACT, ontology.getContactName());
