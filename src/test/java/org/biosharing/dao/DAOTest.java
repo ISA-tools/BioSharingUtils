@@ -32,10 +32,6 @@ public class DAOTest {
         BioSharingDAO dao = new BioSharingDAO();
         Map<String, Standard> defaultNodes = dao.getStandardNodeInformation();
 
-        for (String standard : defaultNodes.keySet()) {
-            System.out.println(defaultNodes.get(standard));
-        }
-
         assertTrue("Oh, we have no standards. I was expecting some.", defaultNodes.size() > 0);
     }
 }

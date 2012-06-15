@@ -46,7 +46,7 @@ public class OntologyUpdateTask extends Task {
         if (count == 0) {
             System.out.println("Database is up to date.");
         } else {
-            System.out.println((startingNodeId - count) +
+            System.out.println((count - startingNodeId) +
                     " ontologies were not in the database before. They have now been added.");
         }
 
