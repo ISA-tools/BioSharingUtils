@@ -19,9 +19,10 @@ import java.util.Map;
  */
 public class BioSharingDAO extends DAO {
 
+    private static final String STANDARD_TABLE = "content_type_standard_cck";
 
     public Map<String, Standard> getStandardNodeInformation() {
-        ResultSet results = executeQuery("select * from standard");
+        ResultSet results = executeQuery("select * from " + STANDARD_TABLE);
         Map<String, Standard> standards = new HashMap<String, Standard>();
 
         try {
@@ -47,8 +48,9 @@ public class BioSharingDAO extends DAO {
     public void updateStandardWithPublication(Standard standard, CiteExploreResult publication) {
         try {
             String pubmedURL = "http://www.ncbi.nlm.nih.gov/pubmed?term=";
-            int rowsAffected = executeUpdate("UPDATE standard SET " + StandardFields.PUBLICATION_TITLE + "='" + publication.getTitle() + "', "
-                    + StandardFields.PUBLICATION_URL + "='" + pubmedURL + publication.getId() + "', " + StandardFields.PUBLICATION_ATTRIBUTES + "='" + publication.getId()
+            int rowsAffected = executeUpdate("UPDATE " + STANDARD_TABLE + " SET " + StandardFields.PUBLICATION_TITLE + "='" + publication.getTitle() + "', "
+                    + (publication.getId().equals("") ? "" : StandardFields.PUBLICATION_URL + "='" + pubmedURL + publication.getId()) + "', " +
+                    StandardFields.PUBLICATION_ATTRIBUTES + "='" + publication.getId()
                     + "' WHERE `" + StandardFields.STANDARD_TITLE + "`='" + standard.getStandardTitle() + "';");
 
             if (rowsAffected == 0) {
@@ -86,7 +88,7 @@ public class BioSharingDAO extends DAO {
         }
 
         // this can be made more compact using the enumeration to get back the fields in the order they were served out.
-        String queryURL = "INSERT standard (" + columnNames + ") VALUES (" + values + ");";
+        String queryURL = "INSERT " + STANDARD_TABLE + " (" + columnNames + ") VALUES (" + values + ");";
 
         System.out.println(queryURL);
         return executeInsert(queryURL);

@@ -1,4 +1,4 @@
-CREATE TABLE standard (
+CREATE TABLE content_type_standard_cck (
 `vid` INT unsigned NOT NULL DEFAULT 0, 
 `nid` INT unsigned NOT NULL DEFAULT 0, 
 `field_bsg_serial_id_value` INT unsigned NOT NULL, 
