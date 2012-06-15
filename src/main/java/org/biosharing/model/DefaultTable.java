@@ -26,7 +26,7 @@ public class DefaultTable implements DBTable {
 
     public Object getValueForField(Fields field) {
         if (fieldToValue.containsKey(field)) {
-            return fieldToValue.get(field);
+            return fieldToValue.get(field) == null ? "" : fieldToValue.get(field);
         } else {
             return "";
         }
