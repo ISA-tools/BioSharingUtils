@@ -8,7 +8,7 @@ package org.biosharing.model;
  *         Date: 22/05/2012
  *         Time: 14:34
  */
-public class Standard extends DefaultNode {
+public class Standard extends DefaultTable {
 
 
 

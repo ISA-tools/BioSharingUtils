@@ -30,16 +30,25 @@ public class OntologyUpdateTest {
 
         System.out.println("We have " + ontologies.size() + " ontologies in BioPortal.");
     }
-    
+
     @Test
     public void testFilterOntologies() {
         // we want to filter out all ontologies which are 'test' ontologies. These explicitly have test in the id, so it
         // makes them easy to identify.
 
         OntologyLocator locator = new OntologyLocator();
-        
+
         List<Standard> standards = locator.getAllOntologies();
         System.out.println("We have " + standards.size() + " filtered ontologies.");
         assertTrue("Oh, no ontologies have been retrieved", standards.size() > 0);
+    }
+
+    @Test
+    public void testOntologyLoadTask() {
+        // we want to filter out all ontologies which are 'test' ontologies. These explicitly have test in the id, so it
+        // makes them easy to identify.
+
+        Task task = new OntologyUpdateTask();
+        task.performTask();
     }
 }

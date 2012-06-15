@@ -1,5 +1,7 @@
 package org.biosharing.cli.tasks;
 
+import org.biosharing.dao.BioSharingDAO;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +16,14 @@ import java.util.List;
 public abstract class Task implements TaskSubject {
 
     private List<TaskObserver> observers;
+    BioSharingDAO dao;
 
     private String taskName;
 
     protected Task(String taskName) {
         this.taskName = taskName;
         observers = new ArrayList<TaskObserver>();
+        dao = new BioSharingDAO();
     }
 
     public void performTask() {

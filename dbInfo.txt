@@ -27,3 +27,77 @@ CREATE TABLE content_type_standard_cck (
 PRIMARY KEY (vid), 
 INDEX nid (nid)
 )
+
+CREATE TABLE node (
+`nid` INT unsigned NOT NULL auto_increment,
+`vid` INT unsigned NOT NULL DEFAULT 0,
+`type` VARCHAR(32) NOT NULL DEFAULT '',
+`language` VARCHAR(12) NOT NULL DEFAULT '',
+`title` VARCHAR(255) NOT NULL DEFAULT '',
+`uid` INT NOT NULL DEFAULT 0,
+`status` INT NOT NULL DEFAULT 1,
+`created` INT NOT NULL DEFAULT 0,
+`changed` INT NOT NULL DEFAULT 0,
+`comment` INT NOT NULL DEFAULT 0,
+`promote` INT NOT NULL DEFAULT 0,
+`moderate` INT NOT NULL DEFAULT 0,
+`sticky` INT NOT NULL DEFAULT 0,
+`tnid` INT unsigned NOT NULL DEFAULT 0,
+`translate` INT NOT NULL DEFAULT 0,
+PRIMARY KEY (nid),
+UNIQUE KEY vid (vid),
+INDEX node_changed (changed),
+INDEX node_created (created),
+INDEX node_moderate (moderate),
+INDEX node_promote_status (promote, status),
+INDEX node_status_type (status, type, nid),
+INDEX node_title_type (title, type(4)),
+INDEX node_type (type(4)),
+INDEX uid (uid),
+INDEX tnid (tnid),
+INDEX translate (translate)
+) /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+CREATE TABLE url_alias (
+`pid` INT unsigned NOT NULL auto_increment,
+`src` VARCHAR(128) NOT NULL DEFAULT '',
+`dst` VARCHAR(128) NOT NULL DEFAULT '',
+`language` VARCHAR(12) NOT NULL DEFAULT '',
+PRIMARY KEY (pid),
+UNIQUE KEY dst_language_pid (dst, language, pid),
+INDEX src_language_pid (src, language, pid)
+) /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+
+mysql> select * from node;
++-----+-----+--------------+----------+-------------------------------------------+-----+--------+------------+------------+---------+---------+----------+--------+------+-----------+
+| nid | vid | type         | language | title                                     | uid | status | created    | changed    | comment | promote | moderate | sticky | tnid | translate |
++-----+-----+--------------+----------+-------------------------------------------+-----+--------+------------+------------+---------+---------+----------+--------+------+-----------+
+|   1 |   1 | page         | en       | About                                     |   1 |      1 | 1313501557 | 1313501557 |       0 |       0 |        0 |      0 |    0 |         0 |
+|   2 |   2 | page         | en       | Standards                                 |   1 |      1 | 1313501603 | 1313502009 |       0 |       0 |        0 |      0 |    0 |         0 |
+|   3 |   3 | page         | en       | Standards Visualization                   |   1 |      1 | 1313501668 | 1313502728 |       0 |       0 |        0 |      0 |    0 |         0 |
+|   4 |   4 | page         | en       | Communities                               |   1 |      1 | 1313501875 | 1317661646 |       0 |       0 |        0 |      0 |    0 |         0 |
+|   5 |   5 | page         | en       | Contact BioSharing                        |   1 |      1 | 1313502089 | 1315483108 |       0 |       0 |        0 |      0 |    0 |         0 |
+|   6 |   6 | standard_cck | en       | ABCDDNA                                   |   1 |      1 | 1313511148 | 1313511148 |       2 |       1 |        0 |      0 |    0 |         0 |
+|   7 |   7 | standard_cck | en       | MRTG                                      |   1 |      1 | 1313511148 | 1313511148 |       2 |       1 |        0 |      0 |    0 |         0 |
+|   8 |   8 | standard_cck | en       | NCD                                       |   1 |      1 | 1313511148 | 1313511148 |       2 |       1 |        0 |      0 |    0 |         0 |
+|   9 |   9 | standard_cck | en       | TDWG SDS                                  |   1 |      1 | 1313511148 | 1313511148 |       2 |       1 |        0 |      0 |    0 |         0 |
+|  10 |  10 | standard_cck | en       | DELTA                                     |   1 |      1 | 1313511148 | 1313511148 |       2 |       1 |        0 |      0 |    0 |         0 |
+|  11 |  11 | standard_cck | en       | TCS                                       |   1 |      1 | 1313511148 | 1313511148 |       2 |       1 |        0 |      0 |    0 |         0 |
+|  12 |  12 | standard_cck | en       | SDD                                       |   1 |      1 | 1313511148 | 1313511148 |       2 |       1 |        0 |      0 |    0 |         0 |
+
+
+
+mysql> select * from url_alias;
++-----+--------------------+-----------------------------------+----------+
+| pid | src                | dst                               | language |
++-----+--------------------+-----------------------------------+----------+
+|   1 | node/1             | about                             | en       |
+|   2 | node/2             | standards                         | en       |
+|   3 | node/3             | standards-visualisation           | en       |
+|   4 | node/4             | communities                       | en       |
+|   5 | node/5             | contact                           | en       |
+|   7 | node/6             | bsg-000204                        | en       |
+|   8 | node/7             | bsg-000203                        | en       |
+|   9 | node/8             | bsg-000202                        | en       |
+|  10 | node/9             | bsg-000201                        | en       |

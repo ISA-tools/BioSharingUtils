@@ -4,8 +4,6 @@ package org.biosharing.model;
 import org.apache.commons.collections15.OrderedMap;
 import org.apache.commons.collections15.map.ListOrderedMap;
 
-import java.util.Map;
-
 /**
  * Created by the ISA team
  *
@@ -14,19 +12,19 @@ import java.util.Map;
  *         Date: 22/05/2012
  *         Time: 11:49
  */
-public class DefaultNode implements Node{
+public class DefaultTable implements DBTable {
 
-    private OrderedMap<StandardFields, Object> fieldToValue;
+    private OrderedMap<Fields, Object> fieldToValue;
 
-    public DefaultNode() {
-        fieldToValue = new ListOrderedMap<StandardFields, Object>();
+    public DefaultTable() {
+        fieldToValue = new ListOrderedMap<Fields, Object>();
     }
 
-    public void addFieldAndValue(StandardFields field, String value) {
+    public void addFieldAndValue(Fields field, Object value) {
         fieldToValue.put(field, value);
     }
 
-    public Object getValueForField(StandardFields field) {
+    public Object getValueForField(Fields field) {
         if (fieldToValue.containsKey(field)) {
             return fieldToValue.get(field);
         } else {
@@ -34,7 +32,7 @@ public class DefaultNode implements Node{
         }
     }
 
-    public OrderedMap<StandardFields, Object> getFieldToValue() {
+    public OrderedMap<Fields, Object> getFieldToValue() {
         return fieldToValue;
     }
 }

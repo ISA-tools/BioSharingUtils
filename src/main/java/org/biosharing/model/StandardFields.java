@@ -8,7 +8,7 @@ package org.biosharing.model;
  *         Date: 01/06/2012
  *         Time: 14:17
  */
-public enum StandardFields {
+public enum StandardFields implements Fields{
 
     NID("nid"),
     VID("vid"),
