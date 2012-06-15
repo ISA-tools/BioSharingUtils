@@ -16,7 +16,7 @@ import java.util.Map;
  *         Date: 14/06/2012
  *         Time: 14:42
  */
-public class OntologyUpdateTask extends Task{
+public class OntologyUpdateTask extends Task {
 
     public OntologyUpdateTask() {
         super("Ontology update task");
@@ -31,7 +31,8 @@ public class OntologyUpdateTask extends Task{
         OntologyLocator ontologyLocator = new OntologyLocator();
         List<Standard> ontologies = ontologyLocator.getAllOntologies();
 
-        int count= 0;
+        int startingNodeId = getNodeIdStart(standards);
+        int count = startingNodeId;
         for (Standard ontology : ontologies) {
             if (!standards.containsKey(ontology.getStandardTitle())) {
                 ontology.getFieldToValue().put(StandardFields.SERIAL_ID, count);
@@ -42,6 +43,30 @@ public class OntologyUpdateTask extends Task{
             }
         }
 
+        if (count == 0) {
+            System.out.println("Database is up to date.");
+        } else {
+            System.out.println((startingNodeId - count) +
+                    " ontologies were not in the database before. They have now been added.");
+        }
+
         dao.closeConnection();
+    }
+
+    public int getNodeIdStart(Map<String, Standard> standards) {
+        int maxValue = 0;
+
+        for (Standard standard : standards.values()) {
+            try {
+                int nodeId = Integer.valueOf(standard.getNodeId());
+                if (nodeId > maxValue) {
+                    maxValue = nodeId;
+                }
+            } catch (NumberFormatException nfe) {
+                // skip this node
+            }
+        }
+
+        return maxValue + 1;
     }
 }
