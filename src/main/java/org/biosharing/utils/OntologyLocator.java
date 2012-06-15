@@ -49,7 +49,7 @@ public class OntologyLocator {
         } else {
             System.out.println("Problem encountered with BioPortal. Please try again later.");
         }
-        System.out.println("After filtering, we have " + ontologies.size() + " ontologies in BioPortal.");
+        System.out.println("After filtering, we have " + standards.size() + " ontologies in BioPortal.");
         return standards;
     }
 }
