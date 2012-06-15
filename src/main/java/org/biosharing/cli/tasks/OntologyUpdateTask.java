@@ -43,8 +43,7 @@ public class OntologyUpdateTask extends Task {
         System.out.println("Getting next computed node id.");
         int startingComputedId = getLastComputedId(standards);
         System.out.println(startingComputedId);
-        
-        
+
 
         int nodeId = startingNodeId;
 
@@ -54,10 +53,11 @@ public class OntologyUpdateTask extends Task {
             System.out.println("Going to add " + ontology.getStandardTitle());
             if (!standards.containsKey(ontology.getStandardTitle())) {
 
-                ontology.getFieldToValue().put(StandardFields.SERIAL_ID, nodeId);
+
+                ontology.getFieldToValue().put(StandardFields.SERIAL_ID, startingComputedId);
                 ontology.getFieldToValue().put(StandardFields.NID, nodeId);
                 ontology.getFieldToValue().put(StandardFields.VID, nodeId);
-                ontology.addFieldAndValue(StandardFields.COMPUTED_ID, createComputedId(startingComputedId + 1, '0', 6));
+                ontology.addFieldAndValue(StandardFields.COMPUTED_ID, createComputedId(startingComputedId, '0', 6));
 
                 dao.insertInformation(ontology);
 
@@ -95,15 +95,15 @@ public class OntologyUpdateTask extends Task {
         for (Standard standard : standards.values()) {
             try {
                 maxValue = Integer.valueOf(standard.getComputedID().split("-")[1]);
-            } catch (NumberFormatException nfe) {
-                nfe.printStackTrace();
+            } catch (Exception nfe) {
+                // skip this standard. Most likely an empty field.
             }
         }
-        return maxValue;
+        return maxValue + 1 ;
     }
 
     private String createComputedId(int id, char paddingCharacter, int desiredLength) {
-        System.out.println("Creating computed id for "+ id);
+        System.out.println("Creating computed id for " + id);
         String value = String.valueOf(id);
 
         int padding = desiredLength - value.length();
@@ -115,7 +115,7 @@ public class OntologyUpdateTask extends Task {
         System.out.println(bsg);
         return bsg;
     }
-    
+
     public int getNextAliasId() {
         List<Alias> aliases = dao.getAliasInformation();
         return getAliasIdStart(aliases);
