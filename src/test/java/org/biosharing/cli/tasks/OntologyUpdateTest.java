@@ -24,8 +24,6 @@ public class OntologyUpdateTest {
     public void testGetOntologies() {
         BioPortalClient client = new BioPortalClient();
 
-        System.out.println("Locating ontologies in BioPortal.");
-
         List<Ontology> ontologies = client.getAllOntologies(true);
         assertTrue("Oh, no ontologies have been retrieved", ontologies != null);
         assertTrue("Oh, no ontologies have been retrieved", ontologies.size() > 0);

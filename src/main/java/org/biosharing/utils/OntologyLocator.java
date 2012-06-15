@@ -21,8 +21,6 @@ public class OntologyLocator {
     public List<Standard> getAllOntologies() {
         BioPortalClient client = new BioPortalClient();
 
-        System.out.println("Locating ontologies in BioPortal.");
-
         List<Ontology> ontologies = client.getAllOntologies(true);
 
         List<Standard> standards = new ArrayList<Standard>();
