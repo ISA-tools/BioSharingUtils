@@ -21,7 +21,7 @@ import static junit.framework.Assert.assertTrue;
  */
 public class OntologyUpdateTest {
 
-    @Ignore
+    @Test
     public void testGetOntologies() {
         BioPortalClient client = new BioPortalClient();
 

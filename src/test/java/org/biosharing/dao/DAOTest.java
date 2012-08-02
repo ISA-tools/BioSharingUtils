@@ -21,6 +21,5 @@ public class DAOTest {
         Map<String, Standard> defaultNodes = dao.getStandardNodeInformation();
 
         System.out.println("We have " + defaultNodes.size() + " standards in the db.");
-//        assertTrue("Oh, we have no standards. I was expecting some.", defaultNodes.size() > 0);
     }
 }

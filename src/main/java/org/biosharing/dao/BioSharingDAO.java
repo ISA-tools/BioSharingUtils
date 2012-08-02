@@ -132,9 +132,10 @@ public class BioSharingDAO extends DAO {
                 columnNames.append("`").append(standardField.toString()).append("`");
                 Object value = table.getFieldToValue().get(standardField);
                 if (value instanceof String) {
-                    values.append("'").append(value.toString()).append("'");
+                    // replace any quotes with double quotes to escape them
+                    String tmpValue = ((String) value).replaceAll("'", "''");
+                    values.append("'").append(tmpValue).append("'");
                 } else {
-
                     values.append(value == null ? "''" : value.toString());
                 }
 

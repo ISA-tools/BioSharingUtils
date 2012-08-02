@@ -19,8 +19,13 @@ import java.util.Map;
  */
 public class OntologyUpdateTask extends Task {
 
+    private int startingNodeId;
+    private int aliasId;
+    private int startingComputedId;
+
     public OntologyUpdateTask() {
         super("Ontology update task");
+
     }
 
     @Override
@@ -33,15 +38,14 @@ public class OntologyUpdateTask extends Task {
         List<Standard> ontologies = ontologyLocator.getAllOntologies();
 
         System.out.println("Getting next node id.");
-        int startingNodeId = getNextNodeId();
+        startingNodeId = getNextNodeId();
         System.out.println(startingNodeId);
 
         System.out.println("Getting next pid.");
-        int aliasId = getNextAliasId();
+        getNextAliasAndStartingComputedId();
         System.out.println(aliasId);
 
         System.out.println("Getting next computed node id.");
-        int startingComputedId = getLastComputedId(standards);
         System.out.println(startingComputedId);
 
 
@@ -89,18 +93,6 @@ public class OntologyUpdateTask extends Task {
         dao.closeConnection();
     }
 
-    public int getLastComputedId(Map<String, Standard> standards) {
-        int maxValue = 0;
-
-        for (Standard standard : standards.values()) {
-            try {
-                maxValue = Integer.valueOf(standard.getComputedID().split("-")[1]);
-            } catch (Exception nfe) {
-                // skip this standard. Most likely an empty field.
-            }
-        }
-        return maxValue + 1 ;
-    }
 
     private String createComputedId(int id, char paddingCharacter, int desiredLength) {
         System.out.println("Creating computed id for " + id);
@@ -116,9 +108,10 @@ public class OntologyUpdateTask extends Task {
         return bsg;
     }
 
-    public int getNextAliasId() {
+    public void getNextAliasAndStartingComputedId() {
         List<Alias> aliases = dao.getAliasInformation();
-        return getAliasIdStart(aliases);
+        aliasId =  getAliasIdStart(aliases);
+        startingComputedId = aliasId;
     }
 
     public int getNextNodeId() {
