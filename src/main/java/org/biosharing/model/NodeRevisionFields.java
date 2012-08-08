@@ -13,7 +13,10 @@ public enum NodeRevisionFields implements Fields{
     NID("nid"),
     VID("vid"),
     UID("uid"),
-    TITLE("title");
+    TITLE("title"),
+    BODY("body"),
+    TEASER("teaser"),
+    LOG("log");
 
     private String dbField;
 
