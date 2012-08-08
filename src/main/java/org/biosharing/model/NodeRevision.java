@@ -29,5 +29,8 @@ public class NodeRevision extends AbstractDBTable {
         addFieldAndValue(NodeRevisionFields.NID, nid);
         addFieldAndValue(NodeRevisionFields.VID, nid);
         addFieldAndValue(NodeRevisionFields.TITLE, standard.getStandardTitle());
+        addFieldAndValue(NodeRevisionFields.BODY, "");
+        addFieldAndValue(NodeRevisionFields.LOG, "");
+        addFieldAndValue(NodeRevisionFields.TEASER, "");
     }
 }
