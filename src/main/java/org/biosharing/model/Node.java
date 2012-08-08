@@ -1,6 +1,8 @@
 package org.biosharing.model;
 
 
+import org.biosharing.dao.BioSharingDAO;
+
 import java.sql.Date;
 
 /**
@@ -19,6 +21,10 @@ public class Node extends DefaultTable {
 
     public String toString() {
         return getNodeId();
+    }
+
+    public String getTableName() {
+        return BioSharingDAO.NODE_TABLE;
     }
     
     public void initialiseNodeForStandard(int id, Standard standard) {

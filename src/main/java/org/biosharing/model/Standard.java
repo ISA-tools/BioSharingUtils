@@ -1,5 +1,7 @@
 package org.biosharing.model;
 
+import org.biosharing.dao.BioSharingDAO;
+
 /**
  * Created by the ISA team
  *
@@ -65,6 +67,10 @@ public class Standard extends DefaultTable {
 
     public String getPublicationURL() {
         return getValueForField(StandardFields.PUBLICATION_URL).toString();
+    }
+
+    public String getTableName() {
+        return BioSharingDAO.STANDARD_TABLE;
     }
 
     public String toString() {

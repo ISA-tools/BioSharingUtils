@@ -1,5 +1,7 @@
 package org.biosharing.model;
 
+import org.biosharing.dao.BioSharingDAO;
+
 /**
  * Created by the ISA team
  *
@@ -20,6 +22,10 @@ public class Alias extends DefaultTable {
 
     public void initialiseAlias() {
         addFieldAndValue(AliasFields.LANGUAGE, "en");
+    }
+
+    public String getTableName() {
+        return BioSharingDAO.ALIAS_TABLE;
     }
 
     public void initialiseAliasForStandard(int pid, int nodeId, Standard standard) {

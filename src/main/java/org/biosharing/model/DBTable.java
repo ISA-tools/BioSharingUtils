@@ -9,4 +9,6 @@ package org.biosharing.model;
  *         Time: 14:44
  */
 public interface DBTable {
+    
+    public String getTableName();
 }
