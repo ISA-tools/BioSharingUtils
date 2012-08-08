@@ -90,11 +90,7 @@ public class OntologyUpdateTask extends Task {
             }
         } catch (Exception e) {
             System.err.println("Error occurred: " + e.getMessage());
-        } finally {
-            dao.closeConnection();    
         }
-
-        
     }
 
 

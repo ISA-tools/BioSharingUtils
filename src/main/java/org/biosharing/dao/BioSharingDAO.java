@@ -154,6 +154,8 @@ public class BioSharingDAO extends DAO {
             return executeInsert(queryURL);
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            closeConnection();
         }
 
         return false;
