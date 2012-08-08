@@ -10,7 +10,7 @@ import org.biosharing.dao.BioSharingDAO;
  *         Date: 08/08/2012
  *         Time: 17:19
  */
-public class NodeRevision extends DefaultTable {
+public class NodeRevision extends AbstractDBTable {
 
     public String toString() {
         return getVID();

@@ -10,7 +10,7 @@ import org.biosharing.dao.BioSharingDAO;
  *         Date: 15/06/2012
  *         Time: 13:19
  */
-public class Alias extends DefaultTable {
+public class Alias extends AbstractDBTable {
 
     public String getPID() {
         return getValueForField(AliasFields.PID).toString();

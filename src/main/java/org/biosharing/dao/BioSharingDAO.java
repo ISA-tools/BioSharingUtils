@@ -122,7 +122,7 @@ public class BioSharingDAO extends DAO {
         }
     }
 
-    public boolean insertInformation(DefaultTable table) {
+    public boolean insertInformation(AbstractDBTable table) {
 
         try {
             StringBuilder columnNames = new StringBuilder();

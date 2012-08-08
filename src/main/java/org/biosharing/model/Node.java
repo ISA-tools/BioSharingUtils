@@ -3,8 +3,6 @@ package org.biosharing.model;
 
 import org.biosharing.dao.BioSharingDAO;
 
-import java.sql.Date;
-
 /**
  * Created by the ISA team
  *
@@ -13,7 +11,7 @@ import java.sql.Date;
  *         Date: 15/06/2012
  *         Time: 13:19
  */
-public class Node extends DefaultTable {
+public class Node extends AbstractDBTable {
 
     public String getNodeId() {
         return getValueForField(NodeFields.NID).toString();

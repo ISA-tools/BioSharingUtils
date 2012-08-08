@@ -12,11 +12,11 @@ import org.apache.commons.collections15.map.ListOrderedMap;
  *         Date: 22/05/2012
  *         Time: 11:49
  */
-public abstract class DefaultTable implements DBTable {
+public abstract class AbstractDBTable implements DBTable {
 
     private OrderedMap<Fields, Object> fieldToValue;
 
-    public DefaultTable() {
+    public AbstractDBTable() {
         fieldToValue = new ListOrderedMap<Fields, Object>();
     }
 

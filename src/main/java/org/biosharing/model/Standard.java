@@ -10,7 +10,7 @@ import org.biosharing.dao.BioSharingDAO;
  *         Date: 22/05/2012
  *         Time: 14:34
  */
-public class Standard extends DefaultTable {
+public class Standard extends AbstractDBTable {
 
 
 
