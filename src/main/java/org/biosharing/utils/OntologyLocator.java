@@ -73,7 +73,7 @@ public class OntologyLocator {
             if (categoryIdToName.containsKey(category)) {
                 categoryNames.append(categoryIdToName.get(category).trim());
 
-                if (count != ontology.getCategories().size() - 1 || !categoryNames.toString().isEmpty()) {
+                if (count != ontology.getCategories().size() - 1 && !categoryNames.toString().isEmpty()) {
                     categoryNames.append(",");
                 }
 
