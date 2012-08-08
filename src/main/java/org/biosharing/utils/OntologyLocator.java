@@ -6,9 +6,7 @@ import org.biosharing.model.StandardFields;
 import org.isatools.isacreator.configuration.Ontology;
 import org.isatools.isacreator.ontologymanager.BioPortalClient;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by the ISA team
@@ -30,12 +28,14 @@ public class OntologyLocator {
         // load category names
         Map<String, String> categoryIdToName = categoryLoader.getCategoryIdToCategoryNameMap();
 
+        Set<String> addedOntologies = new HashSet<String>();
+
         List<Standard> standards = new ArrayList<Standard>();
         if (ontologies != null) {
             System.out.println("Found " + ontologies.size() + " in BioPortal.");
             for (Ontology ontology : ontologies) {
 
-                if (!ontology.getOntologyAbbreviation().contains("test")) {
+                if (!ontology.getOntologyAbbreviation().contains("test") && !addedOntologies.contains(ontology.getOntologyAbbreviation())) {
                     Standard standard = new Standard();
 
                     standard.initialiseStandard();
@@ -54,6 +54,7 @@ public class OntologyLocator {
                     System.out.printf("Categories for %s are %s\n", ontology.getOntologyAbbreviation(), categoriesForOntology);
                     standard.getFieldToValue().put(StandardFields.DOMAIN, categoriesForOntology);
 
+                    addedOntologies.add(ontology.getOntologyAbbreviation());
                     // Here we should check for available publications...
                     standards.add(standard);
                 }
