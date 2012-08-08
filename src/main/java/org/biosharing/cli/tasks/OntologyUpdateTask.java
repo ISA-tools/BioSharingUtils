@@ -31,6 +31,11 @@ public class OntologyUpdateTask extends Task {
             // this will let us know what hasn't already been added
             Map<String, Standard> standards = dao.getStandardNodeInformation();
 
+            System.out.println("Current standards");
+            for(String key : standards.keySet()) {
+                System.out.println("\t" + key);
+            }
+
             OntologyLocator ontologyLocator = new OntologyLocator();
             List<Standard> ontologies = ontologyLocator.getAllOntologies();
 
@@ -50,6 +55,7 @@ public class OntologyUpdateTask extends Task {
             System.out.println("Going to add " + ontologies.size() + " ontologies");
             System.out.println();
             for (Standard ontology : ontologies) {
+                
                 System.out.println("Going to add " + ontology.getStandardTitle());
                 if (!standards.containsKey(ontology.getStandardTitle())) {
 
