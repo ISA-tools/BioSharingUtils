@@ -22,7 +22,6 @@ public class OntologyLocator {
 
     public static final String BIOPORTAL_ONTOLOGY_URL = "http://bioportal.bioontology.org/ontologies/";
 
-
     public List<Standard> getAllOntologies() {
         BioPortalClient client = new BioPortalClient();
         OntologyCategoryLoader categoryLoader = new OntologyCategoryLoader();
@@ -34,8 +33,6 @@ public class OntologyLocator {
         List<Standard> standards = new ArrayList<Standard>();
         if (ontologies != null) {
             System.out.println("Found " + ontologies.size() + " in BioPortal.");
-
-
             for (Ontology ontology : ontologies) {
 
                 if (!ontology.getOntologyAbbreviation().contains("test")) {

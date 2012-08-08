@@ -1,9 +1,6 @@
 package org.biosharing.cli.tasks;
 
-import org.biosharing.model.Alias;
-import org.biosharing.model.Node;
-import org.biosharing.model.Standard;
-import org.biosharing.model.StandardFields;
+import org.biosharing.model.*;
 import org.biosharing.utils.OntologyLocator;
 
 import java.util.List;
@@ -74,8 +71,12 @@ public class OntologyUpdateTask extends Task {
                 Alias aliasForStandard = new Alias();
                 aliasForStandard.initialiseAliasForStandard(aliasId, nodeId, ontology);
                 dao.insertInformation(aliasForStandard);
-
                 System.out.println("Inserted Alias");
+
+                NodeRevision nodeRevision = new NodeRevision();
+                nodeRevision.initialiseNodeRevisionForStandard(nodeId, ontology);
+                dao.insertInformation(nodeRevision);
+                System.out.println("Inserted NodeRevision");
 
                 startingComputedId++;
                 aliasId++;
