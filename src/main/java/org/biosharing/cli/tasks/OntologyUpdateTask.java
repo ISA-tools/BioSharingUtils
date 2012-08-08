@@ -27,70 +27,74 @@ public class OntologyUpdateTask extends Task {
 
     @Override
     public void doTask() {
+        try {
+            // this will let us know what hasn't already been added
+            Map<String, Standard> standards = dao.getStandardNodeInformation();
 
-        // this will let us know what hasn't already been added
-        Map<String, Standard> standards = dao.getStandardNodeInformation();
+            OntologyLocator ontologyLocator = new OntologyLocator();
+            List<Standard> ontologies = ontologyLocator.getAllOntologies();
 
-        OntologyLocator ontologyLocator = new OntologyLocator();
-        List<Standard> ontologies = ontologyLocator.getAllOntologies();
+            System.out.println("Getting next node id.");
+            startingNodeId = getNextNodeId();
+            System.out.println(startingNodeId);
 
-        System.out.println("Getting next node id.");
-        startingNodeId = getNextNodeId();
-        System.out.println(startingNodeId);
+            System.out.println("Getting next pid.");
+            getNextAliasAndStartingComputedId();
+            System.out.println(aliasId);
 
-        System.out.println("Getting next pid.");
-        getNextAliasAndStartingComputedId();
-        System.out.println(aliasId);
+            System.out.println("Getting next computed node id.");
+            System.out.println(startingComputedId);
 
-        System.out.println("Getting next computed node id.");
-        System.out.println(startingComputedId);
+            int nodeId = startingNodeId;
 
+            System.out.println("Going to add " + ontologies.size() + " ontologies");
+            System.out.println();
+            for (Standard ontology : ontologies) {
+                System.out.println("Going to add " + ontology.getStandardTitle());
+                if (!standards.containsKey(ontology.getStandardTitle())) {
 
-        int nodeId = startingNodeId;
+                    ontology.getFieldToValue().put(StandardFields.SERIAL_ID, startingComputedId);
+                    ontology.getFieldToValue().put(StandardFields.NID, nodeId);
+                    ontology.getFieldToValue().put(StandardFields.VID, nodeId);
+                    ontology.addFieldAndValue(StandardFields.COMPUTED_ID, createComputedId(startingComputedId, '0', 6));
 
-        System.out.println("Going to add " + ontologies.size() + " ontologies");
-        System.out.println();
-        for (Standard ontology : ontologies) {
-            System.out.println("Going to add " + ontology.getStandardTitle());
-            if (!standards.containsKey(ontology.getStandardTitle())) {
+                    dao.insertInformation(ontology);
 
-                ontology.getFieldToValue().put(StandardFields.SERIAL_ID, startingComputedId);
-                ontology.getFieldToValue().put(StandardFields.NID, nodeId);
-                ontology.getFieldToValue().put(StandardFields.VID, nodeId);
-                ontology.addFieldAndValue(StandardFields.COMPUTED_ID, createComputedId(startingComputedId, '0', 6));
+                    Node nodeForStandard = new Node();
+                    nodeForStandard.initialiseNodeForStandard(nodeId, ontology);
+                    dao.insertInformation(nodeForStandard);
 
-                dao.insertInformation(ontology);
+                    System.out.println("Inserted Node");
 
-                Node nodeForStandard = new Node();
-                nodeForStandard.initialiseNodeForStandard(nodeId, ontology);
-                dao.insertInformation(nodeForStandard);
+                    Alias aliasForStandard = new Alias();
+                    aliasForStandard.initialiseAliasForStandard(aliasId, nodeId, ontology);
+                    dao.insertInformation(aliasForStandard);
+                    System.out.println("Inserted Alias");
 
-                System.out.println("Inserted Node");
+                    NodeRevision nodeRevision = new NodeRevision();
+                    nodeRevision.initialiseNodeRevisionForStandard(nodeId, ontology);
+                    dao.insertInformation(nodeRevision);
+                    System.out.println("Inserted NodeRevision");
 
-                Alias aliasForStandard = new Alias();
-                aliasForStandard.initialiseAliasForStandard(aliasId, nodeId, ontology);
-                dao.insertInformation(aliasForStandard);
-                System.out.println("Inserted Alias");
-
-                NodeRevision nodeRevision = new NodeRevision();
-                nodeRevision.initialiseNodeRevisionForStandard(nodeId, ontology);
-                dao.insertInformation(nodeRevision);
-                System.out.println("Inserted NodeRevision");
-
-                startingComputedId++;
-                aliasId++;
-                nodeId++;
+                    startingComputedId++;
+                    aliasId++;
+                    nodeId++;
+                }
             }
+
+            if (nodeId == 0) {
+                System.out.println("Database is up to date.");
+            } else {
+                System.out.println((nodeId - startingNodeId) +
+                        " ontologies were not in the database before. They have now been added.");
+            }
+        } catch (Exception e) {
+            System.err.println("Error occurred: " + e.getMessage());
+        } finally {
+            dao.closeConnection();    
         }
 
-        if (nodeId == 0) {
-            System.out.println("Database is up to date.");
-        } else {
-            System.out.println((nodeId - startingNodeId) +
-                    " ontologies were not in the database before. They have now been added.");
-        }
-
-        dao.closeConnection();
+        
     }
 
 
@@ -110,7 +114,7 @@ public class OntologyUpdateTask extends Task {
 
     public void getNextAliasAndStartingComputedId() {
         List<Alias> aliases = dao.getAliasInformation();
-        aliasId =  getAliasIdStart(aliases);
+        aliasId = getAliasIdStart(aliases);
         startingComputedId = aliasId;
     }
 
