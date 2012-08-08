@@ -23,6 +23,7 @@ public class BioSharingDAO extends DAO {
     private static final String STANDARD_TABLE = "content_type_standard_cck";
     private static final String NODE_TABLE = "node";
     private static final String ALIAS_TABLE = "url_alias";
+    private static final String REVISIONS_TABLE = "node_revisions";
 
     public List<Node> getNodeInformation() {
         ResultSet results = executeQuery("select * from " + NODE_TABLE);
@@ -147,7 +148,7 @@ public class BioSharingDAO extends DAO {
             }
 
             // this can be made more compact using the enumeration to get back the fields in the order they were served out.
-            String queryURL = "INSERT " + (table instanceof Standard ? STANDARD_TABLE : table instanceof Alias ? ALIAS_TABLE : NODE_TABLE)
+            String queryURL = "INSERT " + (table instanceof Standard ? STANDARD_TABLE : table instanceof Alias ? ALIAS_TABLE : table instanceof NodeRevision ? REVISIONS_TABLE : NODE_TABLE)
                     + " (" + columnNames + ") VALUES (" + values + ");";
 
             System.out.println(queryURL);
