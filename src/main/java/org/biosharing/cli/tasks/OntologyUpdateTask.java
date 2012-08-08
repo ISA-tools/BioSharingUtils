@@ -54,7 +54,6 @@ public class OntologyUpdateTask extends Task {
             System.out.println("Going to add " + ontology.getStandardTitle());
             if (!standards.containsKey(ontology.getStandardTitle())) {
 
-
                 ontology.getFieldToValue().put(StandardFields.SERIAL_ID, startingComputedId);
                 ontology.getFieldToValue().put(StandardFields.NID, nodeId);
                 ontology.getFieldToValue().put(StandardFields.VID, nodeId);

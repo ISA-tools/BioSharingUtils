@@ -31,8 +31,6 @@ public class Node extends DefaultTable {
         addFieldAndValue(NodeFields.TITLE, standard.getStandardTitle());
         addFieldAndValue(NodeFields.UID, 1);
         addFieldAndValue(NodeFields.STATUS, 1);
-        addFieldAndValue(NodeFields.CREATED, System.currentTimeMillis());
-        addFieldAndValue(NodeFields.CHANGED, System.currentTimeMillis());
         addFieldAndValue(NodeFields.COMMENT, 0);
         addFieldAndValue(NodeFields.PROMOTE, 1);
         addFieldAndValue(NodeFields.MODERATE, 0);
